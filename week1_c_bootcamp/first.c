@@ -3,6 +3,6 @@
 
 int main()
 {
-    printf ("My name is Ben\n") ;
-    return 0;
+    int a = 5, b = 2;
+    printf("%d", a / b);
 }
