@@ -1,0 +1,31 @@
+#include <stdio.h>
+
+int main(){
+    int num;
+    printf("Enter a number divisible by 4 and 5: ");
+    scanf("%d", &num);
+
+    int result4 = num % 4;
+    int result5 = num % 5;
+
+    if (result4 == 0)
+    {
+        if (result5 == 0)
+        {
+            printf("The number %d is divisible by both 4 and 5", num);
+        }
+        else
+        {
+            printf("The number %d is divisible by 4 but not 5", num);
+        }
+    }
+    else if (result5 == 0)
+    {
+        printf("The number %d is divisible by 5 but not 4", num);
+    }
+    else 
+    {
+        printf("The number %d is not divisible by 4 or 5", num);
+    }
+    return 0;
+}
