@@ -6,24 +6,18 @@ typedef struct{
     double y;
 } POINT;
 
-void fillPoints(POINT * pointarray){
-    for (int i = 0; i < 11; i++){
-        pointarray[i].x = rand();
-        pointarray[i].y = rand();
-    }
-}
-
-void printarray(POINT * pointarray){
-    for (int i = 0; i < 11; i++){
-        printf("%lf","%lf"\n, pointarray[i].x, pointarray[i].y);
-    }
-
-}
-
 int main(){
-    POINT pointarray[11]
-    fillPoints(pointarray);
-    printarray(pointarray);
+    int num_points = 10;
+    int i;
+
+    POINT coordinates [num_points];
+    for (i = 0; i < num_points; i++){
+        coordinates[i].x = rand();
+        coordinates[i].y = rand();
+    }
+    for (i = 0; i < num_points; i++){
+        printf("(%.21lf, %.21lf)\n", coordinates[i].x, coordinates[i].y);
+    }
     return 0;
 }
 
