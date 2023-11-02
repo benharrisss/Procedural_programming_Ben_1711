@@ -61,7 +61,7 @@ int main() {
         strcpy(records[numlines].steps, steps);
         numlines++;
     }
-    printf("Number of records in the file: %d\n", numlines);
+    printf("Number of records in file: %d\n", numlines);
 
     for (int i = 0; i < 3; i++){
         printf("%s/%s/%d\n", records[i].date, records[i].time, atoi(records[i].steps));
