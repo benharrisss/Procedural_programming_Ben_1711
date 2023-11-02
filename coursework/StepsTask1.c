@@ -2,6 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Define an appropriate struct
+typedef struct{
+	    char date[11];
+	    char time[6];
+	    char steps[10];  
+} FITNESS_DATA;
+
+// Define any additional variables here
+int numlines = 0;
+char record[100];
+FITNESS_DATA records[2000];
+
 // This is your helper function. Do not change it in any way.
 // Inputs: character array representing a row; the delimiter character
 // Ouputs: date character array; time character array; steps character array
@@ -32,23 +44,13 @@ void tokeniseRecord(const char *input, const char *delimiter,
 
 // Complete the main function
 int main() {
-    typedef struct{
-	    char date[11];
-	    char time[6];
-	    char steps[10];  
-    } FITNESS_DATA;
-
     char filename [] = "FitnessData_2023.csv";
     FILE *file = fopen (filename, "r");
     if (file == NULL) {
         perror("");
         return 1;
     }
-
-    int numlines = 0;
-    char record[100];
-    FITNESS_DATA records[2000];
-
+    
     while (fgets(record, 100, file) != NULL){
         char date[11];
         char time[6];
