@@ -50,7 +50,7 @@ int main() {
         perror("");
         return 1;
     }
-    
+
     while (fgets(record, 100, file) != NULL){
         char date[11];
         char time[6];
@@ -64,7 +64,7 @@ int main() {
     printf("Number of records in the file: %d\n", numlines);
 
     for (int i = 0; i < 3; i++){
-        printf("%s/%s/%s\n", records[i].date, records[i].time, records[i].steps);
+        printf("%s/%s/%d\n", records[i].date, records[i].time, atoi(records[i].steps));
     }
     
     fclose(file);
