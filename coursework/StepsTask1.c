@@ -2,17 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Define an appropriate struct
-typedef struct fitness_data {
-	char date [11];
-	char time [6];
-	int steps;
-} FITNESS_DATA;
-
-// Define any additional variables here
-
-
-
 // This is your helper function. Do not change it in any way.
 // Inputs: character array representing a row; the delimiter character
 // Ouputs: date character array; time character array; steps character array
@@ -43,6 +32,12 @@ void tokeniseRecord(const char *input, const char *delimiter,
 
 // Complete the main function
 int main() {
+    typedef struct{
+	    char date[11];
+	    char time[6];
+	    char steps[10];  
+    } FITNESS_DATA;
+
     char filename [] = "FitnessData_2023.csv";
     FILE *file = fopen (filename, "r");
     if (file == NULL) {
@@ -50,12 +45,26 @@ int main() {
         return 1;
     }
 
-    int buffer_size = 100;
-    char line_buffer[buffer_size];
-    while (fgets(line_buffer, buffer_size, file) != NULL){
-        printf("%s", line_buffer);
-    }
+    int numlines = 0;
+    char record[100];
+    FITNESS_DATA records[2000];
 
+    while (fgets(record, 100, file) != NULL){
+        char date[11];
+        char time[6];
+        char steps[10];
+        tokeniseRecord(record, ",", date, time, steps);
+        strcpy(records[numlines].date, date);
+        strcpy(records[numlines].time, time);
+        strcpy(records[numlines].steps, steps);
+        numlines++;
+    }
+    printf("Number of records in the file: %d\n", numlines);
+
+    for (int i = 0; i < 3; i++){
+        printf("%s/%s/%s\n", records[i].date, records[i].time, records[i].steps);
+    }
+    
     fclose(file);
     return 0;
 
