@@ -1,4 +1,8 @@
+#include <stdio.h> 
+#include <string.h>
 #include "utilities.h"
+#include <ctype.h>
+#include <math.h>
 
 int main()
 {
@@ -23,7 +27,9 @@ int main()
     float temp = 0;
     float max = 0;
     float min = 0;
-    char specmonth[4];
+    char specmonth[5];
+    unsigned long int specmonth_len = strlen(specmonth);
+    char specmonth_up[specmonth_len];
     char *check;
 
     while (1)
@@ -102,18 +108,17 @@ int main()
             for (int i = 0; i < counter; i++)
             {
                 temp = daily_readings[i].bloodIron;
-                if i == 0
+                if (i == 0)
                 {
                     min = temp;
                 }
-                if temp =< min
+                if (temp <= min)
                 {
                     min = temp;
                 }
             }
-            printf("Your lowest blood iron level is %f", min);    
-
-            return 0;
+            printf("Your lowest blood iron level is %.1f\n", min);    
+            fclose(input);
             break;
 
         case 'D':
@@ -129,13 +134,13 @@ int main()
             for (int i = 0; i < counter; i++)
             {
                 temp = daily_readings[i].bloodIron;
-                if temp >= max
+                if (temp >= max)
                 {
                     max = temp;
                 }
             }
-            printf("Your highest blood iron level is %f", max);  
-            return 0;
+            printf("Your highest blood iron level is %.1f\n", max);
+            fclose(input); 
             break;
 
         case 'E':
@@ -150,61 +155,132 @@ int main()
             }
             printf("Enter a month from which you want to view blood iron levels from: ");
             scanf("%s", specmonth);
-            putchar(toupper(specmonth));
+            //for (int i = 0; i < specmonth_len; i++)
+            //{
+                //specmonth_up[i] = toupper(specmonth[i]);
 
-            if (specmonth == "SEP")
+            //}
+            //char sm[] = specmonth_up;
+            if (strcmp(specmonth, "SEP") == 0)
             {
                 for (int i = 0; i < counter; i++)
                 {   
                     check = strstr(daily_readings[i].date, "SEP");
                     if (check)
                     {
-                        printf("Date - %s, Blood Iron - %f", daily_readings[i].date, daily_readings[i].bloodIron);
+                        printf("%s, Blood Iron - %.1f\n", daily_readings[i].date, daily_readings[i].bloodIron);
                     }
                 }
             }
-            else if (specmonth == "OCT")
+            else if (strcmp(specmonth, "OCT") == 0)
             {
                 for (int i = 0; i < counter; i++)
                 {   
                     check = strstr(daily_readings[i].date, "OCT");
                     if (check)
                     {
-                        printf("Date - %s, Blood Iron - %f", daily_readings[i].date, daily_readings[i].bloodIron);
+                        printf("%s, Blood Iron - %.1f\n", daily_readings[i].date, daily_readings[i].bloodIron);
                     }
                 }
             }
-            else if (specmonth == "NOV")
+            else if (strcmp(specmonth, "NOV") == 0)
             {
                 for (int i = 0; i < counter; i++)
                 {   
                     check = strstr(daily_readings[i].date, "NOV");
                     if (check)
                     {
-                        printf("Date - %s, Blood Iron - %f", daily_readings[i].date, daily_readings[i].bloodIron);
+                        printf("%s, Blood Iron - %.1f\n", daily_readings[i].date, daily_readings[i].bloodIron);
                     }
                 }
             }
             else
             {
-                printf("Invalid input, program expects *** input, e.g. SEP for September");
+                printf("Invalid input, program expects *** input, e.g. SEP for September\n");
             }
-            return 0;
+            fclose(input);
             break;
 
         case 'F':
         case 'f':
-            return 0;
+            counter = 0;
+            while (fgets(line, buffer_size, input))
+            {
+                // split up the line and store it in the right place
+                // using the & operator to pass in a pointer to the bloodIron so it stores it
+                tokeniseRecord(line, ",", daily_readings[counter].date, &daily_readings[counter].bloodIron);
+                counter++;
+            }
+            for (int i = 0; i < counter; i++)
+            {
+                temp = daily_readings[i].bloodIron;
+                if (i == 0)
+                {
+                    min = temp;
+                }
+                if (temp <= min)
+                {
+                    min = temp;
+                }
+                if (temp >= max)
+                {
+                    max = temp;
+                }
+            }
+            float range = max - min;
+            printf("The range of blood iron levels is %.1f\n", range);
+
+            void calculateStandardDeviation(int N, float data[])
+            {
+                // variable to store sum of the given data
+                float sum = 0;
+                for (int i = 0; i < N; i++) {
+                    sum += data[i];
+                }
+            
+                // calculating mean
+                float mean = sum / N;
+            
+                // temporary variable to store the summation of square
+                // of difference between individual data items and mean
+                float values = 0;
+            
+                for (int i = 0; i < N; i++) {
+                    values += pow(data[i] - mean, 2);
+                }
+            
+                // variance is the square of standard deviation
+                float variance = values / N;
+            
+                // calculating standard deviation by finding square root
+                // of variance
+                float standardDeviation = sqrt(variance);
+            
+                // printing standard deviation
+                printf("%.2f\n", standardDeviation);
+            }
+            
+            int main()
+            {  
+                float data[100];
+                for (int i = 0; i < counter; i++)
+                {
+                    temp = daily_readings[i].bloodIron;
+                    data[100] = data[100] + temp;
+                    
+                }
+                calculateStandardDeviation(counter, data);
+                return 0;
+            }
+            fclose(input);
             break;
 
         case 'G':
         case 'g':
-            return 0;
             break;
 
         case 'Q':
         case 'q':
-            quit()
             return 0;
             break;
 
