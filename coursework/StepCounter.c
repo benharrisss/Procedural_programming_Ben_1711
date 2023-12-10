@@ -10,8 +10,16 @@
 int numlines = 0;
 char record[100];
 FITNESS_DATA records[2000];
+
 char line[buffer_size];
 char filename[buffer_size];
+
+int counter = 0;
+int temp = 0;
+int min_steps = 0;
+int fewest_steps = 0;
+int max_steps = 0;
+int largest_steps = 0;
 
 
 // This is your helper function. Do not change it in any way.
@@ -83,17 +91,48 @@ int main() {
 
             case 'B': 
             case 'b':
-                 printf("b\n");
+                counter = 0;
+                while (fgets(line, buffer_size, input))
+                {
+                    tokeniseRecord(line, ",", records[counter].date, records[counter].time, records[counter].steps);
+                    counter++;
+                }
+                printf("Total records: %d\n", counter); 
+                   
             break;
 
             case 'C':
             case 'c':
-                 printf("c\n");
+                for (int i = 0; i < counter; i++)
+                {
+                    temp = atoi(records[i].steps);
+                    if (i == 0)
+                    {
+                        min_steps = temp;
+                    }
+                    if (temp <= min_steps)
+                    {
+                        min_steps = temp;
+                        fewest_steps = i;
+                    }
+                }
+                printf("Fewest steps: %s %s\n", records[fewest_steps].date, records[fewest_steps].time);
+
             break;
 
             case 'D':
             case 'd':
-                 printf("d\n");
+                for (int i = 0; i < counter; i++)
+                {
+                    temp = atoi(records[i].steps);
+                    if (temp >= max_steps)
+                    {
+                        max_steps = temp;
+                        largest_steps = i;
+                    }
+                }
+                printf("Largest steps: %s %s\n", records[largest_steps].date, records[largest_steps].time);
+
             break;
 
             case 'E':
