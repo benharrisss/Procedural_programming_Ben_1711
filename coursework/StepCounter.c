@@ -10,6 +10,8 @@
 int numlines = 0;
 char record[100];
 FITNESS_DATA records[2000];
+char line[buffer_size];
+char filename[buffer_size];
 
 
 // This is your helper function. Do not change it in any way.
@@ -58,28 +60,55 @@ int main() {
         printf("Q: Quit\n");
 
         printf("Enter Choice: ");
-        scanf("%c*c", &choice);
+        choice = getchar();
+        while (getchar() != '\n');
         switch(choice)
         {
-            case 'A':     printf("a\n");
+            case 'A':
+            case 'a':
+                printf("Input filename: ");
+                fgets(line, buffer_size, stdin);
+                sscanf(line, " %s ", filename);
+                FILE *input = fopen(filename, "r");
+                if (!input)
+                {
+                    printf("Error: Could not find or open the file.\n");
+                    return 1;
+                }
+                else
+                {
+                    printf("File successfully loaded.\n");
+                }
             break;
 
-            case 'B':     printf("b\n");
+            case 'B': 
+            case 'b':
+                 printf("b\n");
             break;
 
-            case 'C':     printf("c\n");
+            case 'C':
+            case 'c':
+                 printf("c\n");
             break;
 
-            case 'D':     printf("d\n");
+            case 'D':
+            case 'd':
+                 printf("d\n");
             break;
 
-            case 'E':     printf("e\n");
+            case 'E':
+            case 'e':
+                 printf("e\n");
             break;
 
-            case 'F':     printf("f\n");
+            case 'F':
+            case 'f':
+                 printf("f\n");
             break;
 
-            case 'Q':     return 0;
+            case 'Q':
+            case 'q':
+                 return 0;
             break;
 
             default:    printf("\nInvalid choice. Try again.\n");
