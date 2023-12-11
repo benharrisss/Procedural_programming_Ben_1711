@@ -57,7 +57,7 @@ int main() {
     if (!input)
     {
         printf("Error: Invalid file\n");
-        return 1;            
+        return 1;           
     }
 
     while (fgets(line, buffer_size, input))
