@@ -13,8 +13,9 @@ typedef struct {
 
 char line[buffer_size];
 char filename[buffer_size];
-FITNESS_DATA records[2000];
+FitnessData records[2000];
 int counter = 0;
+char output_filename[150];
 
 // Function to tokenize a record
 void tokeniseRecord(char *record, char delimiter, char *date, char *time, int *steps) {
@@ -32,10 +33,18 @@ void tokeniseRecord(char *record, char delimiter, char *date, char *time, int *s
     }
 }
 
-void sortDescending(FitnessData *records, int counter){
-    for (int i = 0; i < counter - 1; i++){
-        for (int j = 0; i < counter - 1; j++){
-            
+void sortDescending(FitnessData *records, int counter)
+{
+    for (int i = 0; i < counter - 1; i++)
+    {
+        for (int j = 0; j < counter - 1; j++)
+        {
+            if (records[j].steps < records[j + 1].steps)
+            {
+                FitnessData temp = records[j];
+                records[j] = records[j + 1];
+                records[j + 1] = temp;
+            }
         }
     }
 }
@@ -53,10 +62,28 @@ int main() {
 
     while (fgets(line, buffer_size, input))
     {
-        tokeniseRecord(line, ",", records[counter].date, records[counter].time, records[counter].steps);
+        tokeniseRecord(line, ',', records[counter].date, records[counter].time, &records[counter].steps);
         counter++;
     }
     fclose(input);
 
-    sortDescending(records, counter)
+    sortDescending(records, counter);
+
+    sprintf(output_filename, "%s.tsv", filename);
+    FILE *output = fopen(output_filename, "w");
+    if (!output)
+    {
+        printf("Error when creating the output file");
+        return 1;
+    }
+
+    for (int i = 0; i < counter; i++)
+    {
+        fprintf(output, "%s\t%s\t%d\n", records[i].date, records[i].time, records[i].steps);
+    }
+    fclose(output);
+
+    printf("Data sorted and written to %s\n", output_filename);
+
+    return 0;
 }
