@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "FitnessDataStruct.h"
 
 // Struct moved to header file
@@ -14,12 +15,26 @@ FITNESS_DATA records[2000];
 char line[buffer_size];
 char filename[buffer_size];
 
+int i = 0;
 int counter = 0;
 int temp = 0;
+
 int min_steps = 0;
 int fewest_steps = 0;
+
 int max_steps = 0;
 int largest_steps = 0;
+
+float result = 0;
+float mean = 0;
+float rounded_mean = 0;
+int result_mean = 0;
+
+int longest_period_end = 0;
+int current_period_start = -1;
+int longest_period_start = -1;
+int longest_period_length = 0;
+int current_period_length = 0;
 
 
 // This is your helper function. Do not change it in any way.
@@ -137,12 +152,52 @@ int main() {
 
             case 'E':
             case 'e':
-                 printf("e\n");
+                for (int i = 0; i < counter; i++)
+                {
+                    result = result + atoi(records[i].steps);
+                }
+                mean = result / counter;
+                rounded_mean = round(mean);
+                result_mean = (int) rounded_mean;
+                printf("Mean step count: %d\n", result_mean);
+
             break;
 
             case 'F':
             case 'f':
-                 printf("f\n");
+                for (int i = 0; i < counter; i++) {
+                    temp = atoi(records[i].steps);
+                    if (temp > 500) {
+                        if (current_period_start == -1) 
+                        {
+                            current_period_start = i;
+                        }
+                    } 
+                    else 
+                    {
+                        if (current_period_start != -1) 
+                        {
+                            current_period_length = i - current_period_start;
+                            if (current_period_length > longest_period_length) {
+                                longest_period_start = current_period_start;
+                                longest_period_end = i - 1;
+                                longest_period_length = current_period_length;
+                            }
+                            current_period_start = -1;
+                        }
+                    }
+                }
+                if (current_period_start != -1) {
+                    current_period_length = counter - current_period_start;
+                    if (current_period_length > longest_period_length) {
+                        longest_period_start = current_period_start;
+                        longest_period_end = i;
+                        longest_period_length = current_period_length;
+                    }
+                }
+                printf("Longest period start: %s %s\n", records[longest_period_start].date, records[longest_period_start].time);
+                printf("Longest period end: %s %s\n", records[longest_period_end].date, records[longest_period_end].time);
+
             break;
 
             case 'Q':
@@ -150,7 +205,7 @@ int main() {
                  return 0;
             break;
 
-            default:    printf("\nInvalid choice. Try again.\n");
+            default:    printf("Invalid choice. Try again.\n");
             break;
     }
    }while (choice != 'Q');
